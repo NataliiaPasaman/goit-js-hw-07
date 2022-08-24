@@ -5,8 +5,10 @@ import { galleryItems } from './gallery-items.js';
  *  Подивися демо відео роботи галереї.
 
 
-Реалізація делегування на div.gallery і отримання url 
-великого зображення. 
+
+Підключення скрипту і стилів бібліотеки модального вікна 
+basicLightbox. Використовуй CDN сервіс jsdelivr і додай
+у проект посилання на мініфіковані (.min) файли бібліотеки.
  */
 
 
@@ -28,4 +30,11 @@ function createImgGallery (array) {
 }
 
 
+// 2. Делегування на div.gallery
+divGallery.addEventListener('click', onClickGallery)
 
+function onClickGallery (event) {
+    const urlOriginal = event.target.dataSource;
+    console.log('URL original', urlOriginal);
+  
+}
