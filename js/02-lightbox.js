@@ -1,21 +1,14 @@
 import { galleryItems } from "./gallery-items.js";
-// Change code below this line
-
-console.log(galleryItems);
-
-
-/** */
 
 const listGallery = document.querySelector(".gallery");
 
-const itemsGallery = galleryItems
+const linksGallery = galleryItems
   .map(({ preview, original, description }) => {
     return `
          <a class="gallery__item" href="${original}">
            <img
              class="gallery__image"
              src="${preview}"
-             data-source="${original}"
              alt="${description}"
            />
          </a>
@@ -23,4 +16,10 @@ const itemsGallery = galleryItems
   })
   .join(" ");
 
-listGallery.insertAdjacentHTML("beforeend", itemsGallery);
+listGallery.insertAdjacentHTML("beforeend", linksGallery);
+
+let galleryLightbox = new SimpleLightbox(".gallery a", {
+  captionsData: "alt",
+  captionPosition: "bottom",
+  captionDelay: 250,
+});
