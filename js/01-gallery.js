@@ -1,17 +1,5 @@
 import { galleryItems } from "./gallery-items.js";
 
-/** Створи галерею з можливістю кліку по її елементах і 
- * перегляду повнорозмірного зображення у модальному вікні.
- *  Подивися демо відео роботи галереї.
-
-4/ Відкриття модального вікна по кліку на елементі галереї.
-
-5/ Заміна значення атрибута src елемента <img> в 
-модальному вікні перед відкриттям. Використовуй готову 
-розмітку модального вікна із зображенням з прикладів 
-бібліотеки basicLightbox.
- */
-
 // 1. Створення галереї зображень
 const divGallery = document.querySelector(".gallery");
 
@@ -32,23 +20,44 @@ const imgGalleryNew = galleryItems
 
 divGallery.insertAdjacentHTML("beforeend", imgGalleryNew);
 
+
 // 2. Делегування на div.gallery
-divGallery.addEventListener('click', onClickGallery)
+divGallery.addEventListener("click", onClicItemkGallery);
+window.addEventListener("keydown", onEscapeClose);
 
-function onClickGallery (event) {
-    event.preventDefault()
+let instance = null;
 
-    if (!event.target.classList.contains('gallery__image')) {
-        return;
-    };
-    const urlOriginal = event.target.dataset.source;
-    console.log('URL original', urlOriginal);
 
-    // 3. Модалка з бібліотеки basicLightbox
-    let instance = basicLightbox.create(`
+function onClicItemkGallery(event) {
+  event.preventDefault();
+
+  if (!event.target.classList.contains("gallery__image")) {
+    return;
+  };
+
+  const urlOriginal = event.target.dataset.source;
+  console.log("URL original", urlOriginal);
+
+  // 3. Модалка з бібліотеки basicLightbox
+  instance = basicLightbox.create(`
     <img class="gallery__image" src="${urlOriginal}"/>
-`)
-instance.show()
+`);
+
+  instance.show();
+  window.addEventListener("keydown", onEscapeClose);
 }
 
 
+function onCloseModal() {
+  instance.close();
+  window.removeEventListener("keydown", onEscapeClose);
+}
+
+
+function onEscapeClose(event) {
+  console.log("Code", event.code);
+
+  if (event.code === "Escape") {
+    onCloseModal();
+  }
+}
