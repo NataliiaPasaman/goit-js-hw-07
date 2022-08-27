@@ -20,40 +20,43 @@ const imgGalleryNew = galleryItems
 
 divGallery.insertAdjacentHTML("beforeend", imgGalleryNew);
 
-
 // 2. Делегування на div.gallery
 divGallery.addEventListener("click", onClicItemkGallery);
-window.addEventListener("keydown", onEscapeClose);
-
 let instance = null;
-
 
 function onClicItemkGallery(event) {
   event.preventDefault();
 
   if (!event.target.classList.contains("gallery__image")) {
     return;
-  };
+  }
 
   const urlOriginal = event.target.dataset.source;
   console.log("URL original", urlOriginal);
 
   // 3. Модалка з бібліотеки basicLightbox
-  instance = basicLightbox.create(`
+  instance = basicLightbox.create(
+    `
     <img class="gallery__image" src="${urlOriginal}"/>
-`);
+`,
+    {
+      onShow: (instance) => {
+        window.addEventListener("keydown", onEscapeClose);
+      },
+      onClose: (instance) => {
+        window.removeEventListener("keydown", onEscapeClose);
+      },
+    }
+  );
 
   instance.show();
-  window.addEventListener("keydown", onEscapeClose);
 }
-
 
 function onCloseModal() {
   instance.close();
-  window.removeEventListener("keydown", onEscapeClose);
 }
 
-
+// 4.Функція перевірки закриття модалки по Escape
 function onEscapeClose(event) {
   console.log("Code", event.code);
 
